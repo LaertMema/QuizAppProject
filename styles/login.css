@@ -1,0 +1,46 @@
+body {
+    background-color: #f8f9fa; /* Light gray to match the landing page's background */
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-container {
+    background: white;
+    color: #000;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+  }
+  .login-container h2 {
+    color: #0056b3; /* Dark blue for header text */
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .btn-primary {
+    background-color: #0056b3; /* Match the header blue from the landing page */
+    border: none;
+    font-size: 16px;
+  }
+  .btn-primary:hover {
+    background-color: #003d80; /* Slightly darker blue for hover effect */
+  }
+  .form-control {
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+  }
+  .form-text {
+    color: #6c757d; /* Subtle gray for help text */
+    font-size: 14px;
+  }
+  .signup-link {
+    color: #0056b3; /* Match the header blue */
+    text-decoration: none;
+  }
+  .signup-link:hover {
+    text-decoration: underline;
+  }
