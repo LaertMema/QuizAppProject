@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Quiz</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .form-group { margin-bottom: 15px; }
+        .question { margin-bottom: 15px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Quiz</h1>
+        <div class="form-group">
+            <label for="quizTitle">Quiz Title:</label>
+            <input type="text" id="quizTitle" class="form-control" required>
+        </div>
+        <div id="questionsContainer">
+            <!-- Questions will be dynamically added here -->
+        </div>
+        <button onclick="addQuestion()" class="btn btn-success">Add Question</button>
+        <a href="main.html" class="btn btn-primary" id="submitButton">Submit</a>
+    </div>
+
+    <script src="scripts/upload-quiz.js"></script>
+</body>
+</html>

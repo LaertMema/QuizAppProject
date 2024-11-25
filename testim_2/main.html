@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .quiz-list { list-style-type: none; padding: 0; }
+        .quiz-item { margin: 10px 0; }
+        .quiz-item button { margin-left: 5px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Available Quizzes</h1>
+        <ul class="quiz-list" id="quizList">
+            <!-- Quizzes will be dynamically added here -->
+        </ul>
+        <a href="upload-quiz.html" class="btn btn-primary">Upload Quiz</a>
+    </div>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
