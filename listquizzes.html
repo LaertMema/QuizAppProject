@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Quizzes</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header d-flex justify-content-between align-items-center px-4 py-3 bg-light border-bottom">
+        <div class="app-name font-weight-bold">
+            Quizz<span class="text-primary">InEpoka</span>
+        </div>
+        <div class="nav-links">
+            <a href="./index.html" class="text-dark mx-2">Home</a>
+            <a href="#" class="text-dark mx-2">Take a Quiz</a>
+            <a href="./uploadquizz.html" class="text-dark mx-2">Upload a Quiz</a>
+        </div>
+    </header>
+    <div class="container mt-5">
+        <h1 class="mb-4">Available Quizzes</h1>
+        <div class="form-group">
+            <label for="subject-selector">Select Subject:</label>
+            <select class="form-control" id="subject-selector">
+                <option value="all">All Subjects</option>
+                <!-- Options will be dynamically added here -->
+            </select>
+        </div>
+        <div id="quiz-list" class="list-group">
+            <!-- Quiz items will be dynamically added here -->
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="scripts/listquizzes.js"></script>
+</body>
+</html>

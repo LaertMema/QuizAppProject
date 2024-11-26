@@ -5,7 +5,8 @@ $(document).ready(function () {
     // Function to create a question and answer group
     function createQuestionAnswerGroup(index) {
         const questionAnswerGroup = $('<div>', {
-            class: 'question-answer-group mb-3'
+            class: 'question-answer-group mb-3',
+            id: `question-answer-group-${index}`
         });
 
         const questionLabel = $('<label>', {
@@ -32,9 +33,34 @@ $(document).ready(function () {
             placeholder: `Enter answer ${index}`
         });
 
-        questionAnswerGroup.append(questionLabel, questionTextArea, answerLabel, answerInput);
+        const removeButton = $('<button>', {
+            type: 'button',
+            class: 'btn btn-danger mt-2',
+            text: 'Remove',
+            click: function () {
+                removeQuestionAnswerGroup(index);
+            }
+        });
+
+        questionAnswerGroup.append(questionLabel, questionTextArea, answerLabel, answerInput, removeButton);
 
         return questionAnswerGroup;
+    }
+
+    // Function to remove a question and answer group
+    function removeQuestionAnswerGroup(index) {
+        $(`#question-answer-group-${index}`).remove();
+        updateQuestionLabels();
+    }
+
+    // Function to update question labels after removal
+    function updateQuestionLabels() {
+        $('.question-answer-group').each(function (index) {
+            $(this).find('label[for^="question"]').text(`Question ${index + 1}`);
+            $(this).find('textarea').attr('id', `question${index + 1}`).attr('placeholder', `Enter question ${index + 1}`);
+            $(this).find('label[for^="answer"]').text(`Answer ${index + 1}`);
+            $(this).find('input').attr('id', `answer${index + 1}`).attr('placeholder', `Enter answer ${index + 1}`);
+        });
     }
 
     // Add the first question and answer group on page load
@@ -49,8 +75,15 @@ $(document).ready(function () {
     // Save quiz to localStorage when "Submit Quiz" is clicked
     $('.submit-btn').click(function () {
         const subject = $('#subject').val();
+        const title = $('#quiz-title').val(); // Get the title value
+
         if (!subject) {
             alert('Please select a subject!');
+            return;
+        }
+
+        if (!title) {
+            alert('Please enter a title!');
             return;
         }
 
@@ -78,17 +111,20 @@ $(document).ready(function () {
         if (!quizzes[subject]) {
             quizzes[subject] = [];
         }
-        quizzes[subject].push(quiz);
+        const quizId = 'quiz-' + Date.now();
+        quizzes[subject].push({ id: quizId, title: title, questions: quiz });
 
         localStorage.setItem('quizzes', JSON.stringify(quizzes));
 
         // Reset the form fields
         $('#subject').val('');
+        $('#quiz-title').val(''); // Reset the title field
         $('#questions-container').empty().append(createQuestionAnswerGroup(1));
 
         alert('Quiz submitted successfully!');
+        window.location.href = 'listquizzes.html';
     });
 
     // Debugging: To verify localStorage structure, uncomment the following line
-    // console.log(quizzes);
+    console.log(quizzes);
 });
