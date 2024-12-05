@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quiz</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Edit Quiz</h1>
+        <form id="quiz-form">
+            <div class="form-group">
+                <label for="quiz-title">Quiz Title</label>
+                <input type="text" id="quiz-title" name="quiz-title" class="form-control">
+            </div>
+            <!-- Questions will be dynamically added here -->
+        </form>
+        <button id="add-question" class="btn btn-secondary mt-3">Add Question</button>
+        <button id="save-quiz" class="btn btn-primary mt-3">Save Quiz</button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="scripts/editquiz.js"></script>
+</body>
+</html>
