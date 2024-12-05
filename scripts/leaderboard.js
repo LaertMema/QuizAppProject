@@ -1,7 +1,21 @@
 $(document).ready(function() {
     const userScores = JSON.parse(localStorage.getItem('userScores')) || {};
     const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
+    
 
+    function logout() {
+        localStorage.removeItem('loggedInUser');
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = 'index.html';
+    }
+    //E bej kete funksionin qe te sigurohem te behem logout mos bej redirect pa u bere kjo
+    function redirectAndLogOut(event) {
+        event.preventDefault(); 
+        logout(); 
+        setTimeout(() => {
+            window.location.href = "index.html"; // 
+            }, 100);
+        }
     // Populate the subject selector
     const subjectSelector = $('#subject-selector');
     const subjects = Object.keys(quizzes);

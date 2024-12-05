@@ -5,7 +5,7 @@ $(document).ready(function () {
     function logout() {
         localStorage.removeItem('loggedInUser');
         localStorage.removeItem('isLoggedIn');
-        window.location.href = 'loginpage.html';
+        window.location.href = 'index.html';
     }
     //E bej kete funksionin qe te sigurohem te behem logout mos bej redirect pa u bere kjo
     function redirectAndLogOut(event) {
