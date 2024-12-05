@@ -1,6 +1,20 @@
 $(document).ready(function () {
     // Load existing quizzes from localStorage or initialize an empty object
     let quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
+    
+    function logout() {
+        localStorage.removeItem('loggedInUser');
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = 'loginpage.html';
+    }
+    //E bej kete funksionin qe te sigurohem te behem logout mos bej redirect pa u bere kjo
+    function redirectAndLogOut(event) {
+        event.preventDefault(); 
+        logout(); 
+        setTimeout(() => {
+            window.location.href = "index.html"; // 
+            }, 100);
+        }
 
     // Function to create a question and answer group
     function createQuestionAnswerGroup(index) {
@@ -112,6 +126,7 @@ $(document).ready(function () {
             quizzes[subject] = [];
         }
         const quizId = 'quiz-' + Date.now();
+        //Data ne e kemi cuditerisht quizzes->subject->quizzes per subject->questions and answers
         quizzes[subject].push({ id: quizId, title: title, questions: quiz });
 
         localStorage.setItem('quizzes', JSON.stringify(quizzes));

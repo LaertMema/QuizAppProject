@@ -34,28 +34,51 @@ $(document).ready(function() {
             quizForm.append(questionGroup);
         });
     } else {
-        console.error('Quiz is not an array:', questions);
+        console.error('Quiz is not an array: or error with type', questions);
     }
-    
+
     $('#submit-quiz').click(function(event) {
         event.preventDefault();
         let score = 0;
-        quiz.forEach((question, index) => {
+        questions.forEach((question, index) => {
             const userAnswer = $(`#question${index}`).val().trim().toLowerCase();
             if (userAnswer === question.answer.trim().toLowerCase()) {
                 score++;
             }
         });
 
-        alert(`Your score is ${score}/${quiz.length}`);
+        alert(`Your score is ${score}/${questions.length}`);
+        
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
-        // Save the score for the user
-        const userScores = JSON.parse(localStorage.getItem('userScores')) || {};
-        if (!userScores[subject]) {
-            userScores[subject] = [];
+        if (!isLoggedIn || !loggedInUser) {
+            alert('User not logged in!');
+            window.location.href = 'loginpage.html';
+            return;
         }
-        userScores[subject].push({ quizIndex, score });
-        localStorage.setItem('userScores', JSON.stringify(userScores));
-        window.location.href = 'listquizzes.html';
+        // Save the score for the user( userScores->user->subject->quizIndex,score struktura)
+        const userScores = JSON.parse(localStorage.getItem('userScores')) || {};
+        if (!userScores[loggedInUser.email]) {
+            userScores[loggedInUser.email] = {};
+        }
+        if (!userScores[loggedInUser.email][subject]) {
+            userScores[loggedInUser.email][subject] = [];
+        }
+         // Check if there is an existing score for this quiz
+         const existingScoreEntry = userScores[loggedInUser.email][subject].find(entry => entry.quizIndex === quizIndex);
+         if (existingScoreEntry) {
+             // Update the score only if the new score is greater
+             if (score > existingScoreEntry.score) {
+                 existingScoreEntry.score = score;
+             }
+         } else {
+             // Add a new score entry if none exists
+             userScores[loggedInUser.email][subject].push({ quizIndex, score });
+         }
+ 
+         localStorage.setItem('userScores', JSON.stringify(userScores));
+         window.location.href = 'listquizzes.html';
     });
 });

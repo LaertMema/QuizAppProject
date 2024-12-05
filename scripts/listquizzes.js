@@ -8,7 +8,18 @@ $(document).ready(function() {
         const option = $(`<option value="${subject}">${subject}</option>`);
         subjectSelector.append(option);
     });
-
+    function logout() {
+        localStorage.removeItem('loggedInUser');
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = 'loginpage.html';
+    }
+    function redirectAndLogOut(event) {
+        event.preventDefault(); 
+        logout(); 
+        // setTimeout(() => {
+        //     window.location.href = "index.html"; // 
+        //     }, 100);
+        }
     // Function to display quizzes by subject
     function displayQuizzes(subject) {
         quizList.empty();

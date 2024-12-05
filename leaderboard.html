@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Quizzes</title>
+    <title>Leaderboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -12,25 +12,35 @@
             Quizz<span class="text-primary">InEpoka</span>
         </div>
         <div class="nav-links">
-            <a href="./index.html" class="text-dark mx-2" onclick="redirectAndLogOut(event)">Log Out</a>
-             <a href="./leaderboard.html" class="text-dark mx-2">Leaderboard</a> 
+            <!-- <a href="./index.html" class="text-dark mx-2">Home</a> -->
+            <a href="./listquizzes.html" class="text-dark mx-2">Take a Quiz</a>
             <a href="./uploadquizz.html" class="text-dark mx-2">Upload a Quiz</a>
+            <a href="#" class="text-dark mx-2" onclick="redirectAndLogOut(event)">Log Out</a>
         </div>
     </header>
     <div class="container mt-5">
-        <h1 class="mb-4">Available Quizzes</h1>
+        <h1 class="mb-4">Leaderboard</h1>
         <div class="form-group">
             <label for="subject-selector">Select Subject:</label>
             <select class="form-control" id="subject-selector">
-                <option value="all">All Subjects</option>
                 <!-- Options will be dynamically added here -->
             </select>
         </div>
-        <div id="quiz-list" class="list-group">
-            <!-- Quiz items will be dynamically added here -->
-        </div>
+        <h2 id="subject-title" class="mt-4"></h2>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard">
+                <!-- Leaderboard entries will be dynamically added here -->
+            </tbody>
+        </table>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="scripts/listquizzes.js"></script>
+    <script src="scripts/leaderboard.js"></script>
 </body>
 </html>

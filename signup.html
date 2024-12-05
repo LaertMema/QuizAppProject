@@ -23,7 +23,7 @@
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input type="email" class="form-control" id="email" placeholder="Enter your email">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <div id="emailHelp" class="form-text">Make sure your email is valid.</div>
       </div>
 
       <div class="mb-3">
@@ -72,11 +72,25 @@
       
       //Ben load listen nese ska e initializon bosh
       let users = JSON.parse(localStorage.getItem('users')) || [];
-      users.push({ fullname: fullname, email: email, password: password });
-      localStorage.setItem('users', JSON.stringify(users));
-      alert("User created successfully!");
-      window.location.href = "./loginpage.html";
-     }
+      const userExists = users.some(user => user.email === email);
+
+                if (userExists) {
+                    alert('User with this email already exists!');
+                    return;
+                }
+
+                const newUser = {
+                    fullname,
+                    email,
+                    password,
+                    role: 'user' // Default 
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                alert('Sign up successful! Please log in.');
+                window.location.href = 'loginpage.html';
+      }
    });
   </script>
 </body>
