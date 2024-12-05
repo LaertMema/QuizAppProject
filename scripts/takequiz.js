@@ -66,10 +66,10 @@ $(document).ready(function() {
         if (!userScores[loggedInUser.email][subject]) {
             userScores[loggedInUser.email][subject] = [];
         }
-         // Check if there is an existing score for this quiz
+         // Check if there is an existing score 
          const existingScoreEntry = userScores[loggedInUser.email][subject].find(entry => entry.quizIndex === quizIndex);
          if (existingScoreEntry) {
-             // Update the score only if the new score is greater
+             // Update the score only if the new score is greater(jemi pozitive)
              if (score > existingScoreEntry.score) {
                  existingScoreEntry.score = score;
              }
