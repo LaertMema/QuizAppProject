@@ -10,6 +10,7 @@ $(document).ready(function() {
     console.log('Quiz Index:', quizIndex);
 
     const quiz = quizzes[subject] ? quizzes[subject][quizIndex] : null;
+    const questions = quiz ? quiz.questions : null;
 
     // Debugging: Check the retrieved quiz object
     console.log('Retrieved Quiz:', quiz);
@@ -22,9 +23,8 @@ $(document).ready(function() {
     $('#quiz-title').text(quiz.title || 'Untitled Quiz');
 
     const quizForm = $('#quiz-form');
-    // Assuming the questions are directly within the quiz object
-    if (Array.isArray(quiz)) {
-        quiz.forEach((question, index) => {
+    if (Array.isArray(questions)) {
+        questions.forEach((question, index) => {
             const questionGroup = $(`
                 <div class="form-group">
                     <label for="question${index}">${question.question}</label>
@@ -34,9 +34,9 @@ $(document).ready(function() {
             quizForm.append(questionGroup);
         });
     } else {
-        console.error('Quiz is not an array:', quiz);
+        console.error('Quiz is not an array:', questions);
     }
-
+    
     $('#submit-quiz').click(function(event) {
         event.preventDefault();
         let score = 0;
