@@ -16,7 +16,7 @@ $(document).ready(function () {
             }, 100);
         }
 
-    // Function to create a question and answer group
+    
     function createQuestionAnswerGroup(index) {
         const questionAnswerGroup = $('<div>', {
             class: 'question-answer-group mb-3',
@@ -61,13 +61,13 @@ $(document).ready(function () {
         return questionAnswerGroup;
     }
 
-    // Function to remove a question and answer group
+    // Function to remove a question 
     function removeQuestionAnswerGroup(index) {
         $(`#question-answer-group-${index}`).remove();
         updateQuestionLabels();
     }
 
-    // Function to update question labels after removal
+    // Function to update labels after I remove a question
     function updateQuestionLabels() {
         $('.question-answer-group').each(function (index) {
             $(this).find('label[for^="question"]').text(`Question ${index + 1}`);
@@ -89,7 +89,7 @@ $(document).ready(function () {
     // Save quiz to localStorage when "Submit Quiz" is clicked
     $('.submit-btn').click(function () {
         const subject = $('#subject').val();
-        const title = $('#quiz-title').val(); // Get the title value
+        const title = $('#quiz-title').val(); 
 
         if (!subject) {
             alert('Please select a subject!');
@@ -109,8 +109,8 @@ $(document).ready(function () {
             const answerText = $(this).find('input').val().trim();
             
             if (!questionText || !answerText) {
-                isEmpty = true; // Mark as incomplete if any field is empty
-                return false;   // Break the loop
+                isEmpty = true; 
+                return false;   
             }
 
             quiz.push({ question: questionText, answer: answerText });
@@ -133,13 +133,13 @@ $(document).ready(function () {
 
         // Reset the form fields
         $('#subject').val('');
-        $('#quiz-title').val(''); // Reset the title field
+        $('#quiz-title').val(''); 
         $('#questions-container').empty().append(createQuestionAnswerGroup(1));
 
         alert('Quiz submitted successfully!');
         window.location.href = 'listquizzes.html';
     });
 
-    // Debugging: To verify localStorage structure, uncomment the following line
+    // Debugging: 
     console.log(quizzes);
 });

@@ -21,9 +21,9 @@ $(document).ready(function() {
 
     $('#quiz-title').val(quiz.title || 'Untitled Quiz');
 
-    const quizForm = $('#quiz-form');
+    const $quizForm = $('#quiz-form');
     quiz.questions.forEach((question, index) => {
-        const questionGroup = $(`
+        const $questionGroup = $(`
             <div class="form-group">
                 <label for="question${index}">Question ${index + 1}</label>
                 <input type="text" id="question${index}" name="question${index}" class="form-control" value="${question.question}">
@@ -32,7 +32,7 @@ $(document).ready(function() {
                 <button type="button" class="btn btn-danger mt-2" onclick="removeQuestion(${index})">Remove Question</button>
             </div>
         `);
-        quizForm.append(questionGroup);
+        $quizForm.append($questionGroup);
     });
 
     $('#add-question').click(function(event) {
@@ -47,7 +47,7 @@ $(document).ready(function() {
                 <button type="button" class="btn btn-danger mt-2" onclick="removeQuestion(${index})">Remove Question</button>
             </div>
         `);
-        quizForm.append(questionGroup);
+        $quizForm.append(questionGroup);
         quiz.questions.push({ question: '', answer: '' });
     });
 
@@ -65,8 +65,8 @@ $(document).ready(function() {
 });
 
 function removeQuestion(index) {
-    const questionGroup = $(`#question${index}`).closest('.form-group');
-    questionGroup.remove();
+    const $questionGroup = $(`#question${index}`).closest('.form-group');
+    $questionGroup.remove();
     const urlParams = new URLSearchParams(window.location.search);
     const subject = urlParams.get('subject');
     const quizIndex = urlParams.get('quizIndex');

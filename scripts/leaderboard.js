@@ -16,19 +16,19 @@ $(document).ready(function() {
             window.location.href = "index.html"; // 
             }, 100);
         }
-    // Populate the subject selector
-    const subjectSelector = $('#subject-selector');
+    // Populating selector
+    const $subjectSelector = $('#subject-selector');
     const subjects = Object.keys(quizzes);
     subjects.forEach(subject => {
-        const option = $(`<option value="${subject}">${subject}</option>`);
-        subjectSelector.append(option);
+        const $option = $(`<option value="${subject}">${subject}</option>`);
+        $subjectSelector.append($option);
     });
 
     // Load the leaderboard for the selected subject
     function loadLeaderboard(subject) {
         $('#subject-title').text(`${subject} - Leaderboard`);
-        const leaderboard = $('#leaderboard');
-        leaderboard.empty();
+        const $leaderboard = $('#leaderboard');
+        $leaderboard.empty();
 
         const scores = [];
 
@@ -41,34 +41,34 @@ $(document).ready(function() {
             }
         });
 
-        // Sort scores in descending order
+        // Sort 
         scores.sort((a, b) => b.totalScore - a.totalScore);
 
-        // Display the leaderboard
+        // Display 
         if (scores.length > 0) {
             scores.forEach((entry, index) => {
-                const row = $(`
+                const $row = $(`
                     <tr>
                         <th scope="row">${index + 1}</th>
                         <td>${entry.email}</td>
                         <td>${entry.totalScore}</td>
                     </tr>
                 `);
-                leaderboard.append(row);
+                $leaderboard.append($row);
             });
         } else {
-            leaderboard.append('<tr><td colspan="3" class="text-center">No entries yet</td></tr>');
+            $leaderboard.append('<tr><td colspan="3" class="text-center">No entries yet</td></tr>');
         }
     }
 
-    // Load the leaderboard for the first subject by default
+    // Load the leaderboard for default subject
     if (subjects.length > 0) {
         loadLeaderboard(subjects[0]);
     }
 
     // Event listener for subject selector change
-    subjectSelector.change(function() {
-        const selectedSubject = $(this).val();
-        loadLeaderboard(selectedSubject);
+    $subjectSelector.change(function() {
+        const $selectedSubject = $(this).val();
+        loadLeaderboard($selectedSubject);
     });
 });

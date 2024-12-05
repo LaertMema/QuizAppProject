@@ -1,12 +1,12 @@
 $(document).ready(function() {
-    const quizList = $('#quiz-list');
-    const subjectSelector = $('#subject-selector');
+    const $quizList = $('#quiz-list');
+    const $subjectSelector = $('#subject-selector');
     const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
 
     // Populate the subject selector
     Object.keys(quizzes).forEach(subject => {
-        const option = $(`<option value="${subject}">${subject}</option>`);
-        subjectSelector.append(option);
+        const $option = $(`<option value="${subject}">${subject}</option>`);
+        $subjectSelector.append($option);
     });
     function logout() {
         localStorage.removeItem('loggedInUser');
@@ -22,8 +22,10 @@ $(document).ready(function() {
         }
     // Function to display quizzes by subject
     function displayQuizzes(subject) {
-        quizList.empty();
-        const quizzesToDisplay = subject === 'all' ? Object.entries(quizzes).flatMap(([subj, quizzes]) => quizzes.map((quiz, index) => ({ ...quiz, subject: subj, index }))) : quizzes[subject].map((quiz, index) => ({ ...quiz, subject, index }));
+        $quizList.empty();
+        const quizzesToDisplay = subject === 'all' ? Object.entries(quizzes).flatMap(([subj, quizzes]) => quizzes.map((quiz, index) => 
+            ({ ...quiz, subject: subj, index }))) : quizzes[subject].map((quiz, index) => 
+                ({ ...quiz, subject, index }));
 
         if (quizzesToDisplay && quizzesToDisplay.length > 0) {
             quizzesToDisplay.forEach((quiz) => {
@@ -34,10 +36,10 @@ $(document).ready(function() {
                     <button class="btn btn-secondary mt-2" onclick="editQuiz('${quiz.subject}', ${quiz.index})">Edit Quiz</button>
                     <button class="btn btn-danger mt-2" onclick="removeQuiz('${quiz.subject}', ${quiz.index})">Remove Quiz</button>
                 `);
-                quizList.append(quizItem);
+                $quizList.append(quizItem);
             });
         } else {
-            quizList.append('<p class="text-muted">No quizzes available for this subject.</p>');
+            $quizList.append('<p class="text-muted">No quizzes available for this subject.</p>');
         }
     }
 
@@ -45,7 +47,7 @@ $(document).ready(function() {
     displayQuizzes('all');
 
     // Event listener for subject selector change
-    subjectSelector.change(function() {
+    $subjectSelector.change(function() {
         const selectedSubject = $(this).val();
         displayQuizzes(selectedSubject);
     });

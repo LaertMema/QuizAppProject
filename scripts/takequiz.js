@@ -22,16 +22,16 @@ $(document).ready(function() {
 
     $('#quiz-title').text(quiz.title || 'Untitled Quiz');
 
-    const quizForm = $('#quiz-form');
+    const $quizForm = $('#quiz-form');
     if (Array.isArray(questions)) {
         questions.forEach((question, index) => {
-            const questionGroup = $(`
+            const $questionGroup = $(`
                 <div class="form-group">
                     <label for="question${index}">${question.question}</label>
                     <input type="text" id="question${index}" name="question${index}" class="form-control">
                 </div>
             `);
-            quizForm.append(questionGroup);
+            $quizForm.append($questionGroup);
         });
     } else {
         console.error('Quiz is not an array: or error with type', questions);
