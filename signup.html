@@ -46,57 +46,49 @@
       </p>
     </form>
   </div>
-  <!-- Bootstrap JS -->
+  <!-- Bootstrap JS (Dy links jane identike....)-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-   $("#signup-submit").submit(function(e){
-     e.preventDefault();
-     var fullname = $("#fullname").val();
-     var email = $("#email").val();
-     var password = $("#password").val();
-     var confirmPassword = $("#confirmPassword").val();
-     if(password != confirmPassword){
-       alert("Passwords do not match!");
-     } else {
-      //  $.ajax({
-      //    url: "http://localhost:3000/users",
-      //    type: "POST",
-      //    data: {
-      //      fullname: fullname,
-      //      email: email,
-      //      password: password
-      //    },
-      //    success: function(response){
-      //      alert("User created successfully!");
-      //      window.location.href = "./loginpage.html";
-      //    },
-      //    error: function(){
-      //      alert("An error occurred. Please try again later.");
-      //    }
-      //  });
-      
-      //Ben load listen nese ska e initializon bosh
-      let users = JSON.parse(localStorage.getItem('users')) || [];
-      const userExists = users.some(user => user.email === email);
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    $('#signup-submit').on('submit', function(e) {
+        e.preventDefault();
+        
+        const signupData = {
+            email: $('#email').val(),
+            userName: $('#fullname').val(), // Using fullname as username
+            password: $('#password').val()
+        };
 
-                if (userExists) {
-                    alert('User with this email already exists!');
-                    return;
-                }
-
-                const newUser = {
-                    fullname,
-                    email,
-                    password,
-                    role: 'user' // Default 
-                };
-
-                users.push(newUser);
-                localStorage.setItem('users', JSON.stringify(users));
-                alert('Sign up successful! Please log in.');
-                window.location.href = 'loginpage.html';
-      }
-   });
-  </script>
+        $.ajax({
+            url: 'https://localhost:7155/api/User/register',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(signupData),
+            success: function(response) {
+                window.location.href = 'loginpage.html'; // Updated to match your file name
+            },
+            error: function(xhr) {
+                alert('Registration failed. Please try again.');
+                console.log(xhr.responseText); // This will help debug API errors
+            }
+        });
+    });
+            // Password confirmation validation
+    $('#confirmPassword').on('input', function() {
+        const password = $('#password').val();
+        const confirmPassword = $(this).val();
+        
+        if (password !== confirmPassword) {
+            $(this).addClass('is-invalid');
+            $('button[type="submit"]').prop('disabled', true);
+        } else {
+            $(this).removeClass('is-invalid');
+            $('button[type="submit"]').prop('disabled', false);
+        }
+    });
+});
+    </script>
 </body>
 </html>

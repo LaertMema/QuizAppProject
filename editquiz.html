@@ -3,23 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Quiz</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Edit Quiz - QuizInEpoka</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/uploadquizz.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Edit Quiz</h1>
-        <form id="quiz-form">
-            <div class="form-group">
-                <label for="quiz-title">Quiz Title</label>
-                <input type="text" id="quiz-title" name="quiz-title" class="form-control">
+    <header class="header d-flex justify-content-between align-items-center px-4">
+        <div class="app-name">
+            Quizz<span>InEpoka</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" id="logoutLink">Log Out</a>
+            <a href="./listquizzes.html">Take a Quiz</a>
+            <a href="./leaderboard.html">Leaderboard</a>
+            <a href="./myquizzes.html">My Quizzes</a>
+        </div>
+    </header>
+
+    <section class="upload-section">
+        <div class="text-content">
+            <h2>Edit Your Quiz</h2>
+            <p>Make changes to your quiz content.</p>
+        </div>
+
+        <div class="subject-select">
+            <label for="subject" class="form-label">Subject</label>
+            <select class="form-select form-select-lg mb-3" id="subject" disabled>
+                <!-- Subject will be loaded here -->
+            </select>
+            <div class="title-input mb-3">
+                <label for="quiz-title" class="form-label">Quiz Title</label>
+                <input type="text" class="form-control form-control-lg" id="quiz-title" required>
             </div>
-            <!-- Questions will be dynamically added here -->
-        </form>
-        <button id="add-question" class="btn btn-secondary mt-3">Add Question</button>
-        <button id="save-quiz" class="btn btn-primary mt-3">Save Quiz</button>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <div class="description-input mb-3">
+                <label for="quiz-description" class="form-label">Quiz Description</label>
+                <textarea class="form-control form-control-lg" id="quiz-description" required></textarea>
+            </div>
+        </div>
+
+        <div id="questions-container" class="question-area">
+            <!-- Questions will be loaded here -->
+        </div>
+        
+        <button id="add-question-btn" class="btn add-question-btn">Add Question</button>
+        <button id="save-quiz" class="btn submit-btn">Save Changes</button>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="scripts/editquiz.js"></script>
 </body>
 </html>

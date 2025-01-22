@@ -1,74 +1,160 @@
 $(document).ready(function() {
-    const $quizList = $('#quiz-list');
-    const $subjectSelector = $('#subject-selector');
-    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
-
-    // Populate the subject selector
-    Object.keys(quizzes).forEach(subject => {
-        const $option = $(`<option value="${subject}">${subject}</option>`);
-        $subjectSelector.append($option);
+    // Check authentication status
+    $.ajax({
+        url: 'https://localhost:7155/api/User/current',
+        method: 'GET',
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(response) {
+            console.log('Authentication successful:', response);
+            loadSubjects();
+        },
+        error: function(xhr) {
+            console.error('Authentication error:', xhr.status, xhr.responseText);
+            if (xhr.status === 401) {
+                window.location.href = 'loginpage.html';
+            }
+        }
     });
-    function logout() {
-        localStorage.removeItem('loggedInUser');
-        localStorage.removeItem('isLoggedIn');
-        window.location.href = 'loginpage.html';
-    }
-    function redirectAndLogOut(event) {
-        event.preventDefault(); 
-        logout(); 
-        // setTimeout(() => {
-        //     window.location.href = "index.html"; // 
-        //     }, 100);
-        }
-    // Function to display quizzes by subject
-    function displayQuizzes(subject) {
-        $quizList.empty();
-        const quizzesToDisplay = subject === 'all' ? Object.entries(quizzes).flatMap(([subj, quizzes]) => quizzes.map((quiz, index) => 
-            ({ ...quiz, subject: subj, index }))) : quizzes[subject].map((quiz, index) => 
-                ({ ...quiz, subject, index }));
 
-        if (quizzesToDisplay && quizzesToDisplay.length > 0) {
-            quizzesToDisplay.forEach((quiz) => {
-                const quizItem = $('<div class="list-group-item"></div>');
-                quizItem.html(`
-                    <h5 class="mb-1">${quiz.title || 'Untitled Quiz'}</h5>
-                    <button class="btn btn-primary mt-2" onclick="takeQuiz('${quiz.subject}', ${quiz.index})">Take Quiz</button>
-                    <button class="btn btn-secondary mt-2" onclick="editQuiz('${quiz.subject}', ${quiz.index})">Edit Quiz</button>
-                    <button class="btn btn-danger mt-2" onclick="removeQuiz('${quiz.subject}', ${quiz.index})">Remove Quiz</button>
-                `);
-                $quizList.append(quizItem);
-            });
-        } else {
-            $quizList.append('<p class="text-muted">No quizzes available for this subject.</p>');
-        }
+    function loadSubjects() {
+        console.log('Loading subjects...');
+        $.ajax({
+            url: 'https://localhost:7155/api/Subject',
+            method: 'GET',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(subjects) {
+                console.log('Subjects loaded:', subjects);
+                const subjectSelect = $('#subject-selector');
+                subjectSelect.html('<option value="all">All Subjects</option>');
+                subjects.forEach(subject => {
+                    subjectSelect.append(`<option value="${subject.id}">${subject.name}</option>`);
+                });
+                loadQuizzes();
+            },
+            error: function(xhr) {
+                console.error('Subject loading error:', xhr.status, xhr.responseText);
+                if (xhr.status === 401) {
+                    window.location.href = 'loginpage.html';
+                } else {
+                    // Still try to load quizzes even if subjects fail to load
+                    loadQuizzes();
+                }
+            }
+        });
     }
 
-    // Initial display of all quizzes
-    displayQuizzes('all');
+    // Subject filter change handler
+    $('#subject-selector').change(function() {
+        loadQuizzes();
+    });
 
-    // Event listener for subject selector change
-    $subjectSelector.change(function() {
-        const selectedSubject = $(this).val();
-        displayQuizzes(selectedSubject);
+    // Search input handler with debounce
+    let searchTimeout;
+    $('#searchInput').on('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            loadQuizzes();
+        }, 300); // Wait 300ms after user stops typing
+    });
+
+    function loadQuizzes() {
+        const selectedSubject = $('#subject-selector').val();
+        
+        let url = 'https://localhost:7155/api/Quiz';
+        if (selectedSubject && selectedSubject !== 'all') {
+            url = `https://localhost:7155/api/Quiz/subject/${selectedSubject}`;
+        }
+
+        $('#quiz-list').html(`
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        `);
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(quizzes) {
+                displayQuizzes(quizzes);
+            },
+            error: function(xhr) {
+                console.error('Quiz loading error:', xhr.status, xhr.responseText);
+                if (xhr.status === 401) {
+                    window.location.href = 'loginpage.html';
+                } else {
+                    $('#quiz-list').html(`
+                        <div class="alert alert-danger">
+                            Error loading quizzes. Please try again later.
+                        </div>
+                    `);
+                }
+            }
+        });
+    }
+
+    function displayQuizzes(quizzes) {
+        const quizList = $('#quiz-list');
+        quizList.empty();
+
+        if (quizzes.length === 0) {
+            quizList.html(`
+                <div class="alert alert-info">
+                    No quizzes found.
+                </div>
+            `);
+            return;
+        }
+
+        quizzes.forEach(quiz => {
+            const quizItem = `
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">${quiz.title}</h5>
+                            <p class="mb-1">${quiz.description}</p>
+                            <small class="text-muted">
+                                Created by: ${quiz.creatorName} | 
+                                Subject: ${quiz.subject.name} | 
+                                Questions: ${quiz.questionCount} | 
+                                Created: ${new Date(quiz.createdAt).toLocaleDateString()}
+                            </small>
+                        </div>
+                        <a href="takequiz.html?id=${quiz.id}" class="btn btn-primary">Take Quiz</a>
+                    </div>
+                </div>
+            `;
+            quizList.append(quizItem);
+        });
+    }
+
+    function updateQuizCount(count) {
+        $('#quizCount').text(`${count} Quiz${count !== 1 ? 'zes' : ''} Found`);
+    }
+
+    // Logout handler
+    $('#logoutLink').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'https://localhost:7155/api/User/logout',
+            method: 'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function() {
+                window.location.href = 'index.html';
+            },
+            error: function() {
+                alert('Error logging out');
+            }
+        });
     });
 });
-
-function takeQuiz(subject, index) {
-    window.location.href = `takequiz.html?subject=${subject}&quizIndex=${index}`;
-}
-
-function editQuiz(subject, index) {
-    window.location.href = `editquiz.html?subject=${subject}&quizIndex=${index}`;
-}
-
-function removeQuiz(subject, index) {
-    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
-    if (quizzes[subject]) {
-        quizzes[subject].splice(index, 1);
-        if (quizzes[subject].length === 0) {
-            delete quizzes[subject];
-        }
-        localStorage.setItem('quizzes', JSON.stringify(quizzes));
-        location.reload();
-    }
-}

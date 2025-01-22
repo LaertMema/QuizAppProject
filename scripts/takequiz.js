@@ -1,84 +1,128 @@
-$(document).ready(function() {
+$(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const subject = urlParams.get('subject');
-    const quizIndex = urlParams.get('quizIndex');
-    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
+    const quizId = urlParams.get('id');
 
-    // Debugging: Check the structure of quizzes and the retrieved quiz
-    console.log('Quizzes:', quizzes);
-    console.log('Subject:', subject);
-    console.log('Quiz Index:', quizIndex);
+    // First, start the quiz attempt
+    $.ajax({
+        url: 'https://localhost:7155/api/QuizAttempt/start',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ quizId: parseInt(quizId) }),
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (attemptResponse) {
+            localStorage.setItem('currentAttemptId', attemptResponse.id);
+            
+            // Then fetch the quiz details
+            $.ajax({
+                url: `https://localhost:7155/api/Quiz/${quizId}`,
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (quiz) {
+                    displayQuiz(quiz);
+                },
+                error: function (xhr) {
+                    alert('Error loading quiz: ' + xhr.responseText);
+                }
+            });
+        },
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                window.location.href = '/login.html';
+            } else {
+                alert('Error starting quiz: ' + xhr.responseText);
+            }
+        }
+    });
 
-    const quiz = quizzes[subject] ? quizzes[subject][quizIndex] : null;
-    const questions = quiz ? quiz.questions : null;
+    function displayQuiz(quiz) {
+        $('#quizTitle').text(quiz.title);
+        $('#quizDescription').text(quiz.description);
 
-    // Debugging: Check the retrieved quiz object
-    console.log('Retrieved Quiz:', quiz);
-
-    if (!quiz) {
-        alert('Quiz not found!');
-        return;
-    }
-
-    $('#quiz-title').text(quiz.title || 'Untitled Quiz');
-
-    const $quizForm = $('#quiz-form');
-    if (Array.isArray(questions)) {
-        questions.forEach((question, index) => {
-            const $questionGroup = $(`
-                <div class="form-group">
-                    <label for="question${index}">${question.question}</label>
-                    <input type="text" id="question${index}" name="question${index}" class="form-control">
+        const questionsHtml = quiz.questions.map((question, index) => `
+            <div class="question-card mb-4">
+                <div class="question-header">
+                    Question ${index + 1}
                 </div>
-            `);
-            $quizForm.append($questionGroup);
-        });
-    } else {
-        console.error('Quiz is not an array: or error with type', questions);
+                <div class="question-body">
+                    <p class="question-text">${question.text}</p>
+                    <div class="options-container">
+                        ${question.options.map(option => `
+                            <div class="option-item">
+                                <input type="radio" 
+                                    name="question${question.id}" 
+                                    value="${option.id}" 
+                                    id="option${option.id}"
+                                    class="option-input">
+                                <label for="option${option.id}" class="option-label">
+                                    ${option.text}
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        $('#questions').html(questionsHtml);
     }
 
-    $('#submit-quiz').click(function(event) {
-        event.preventDefault();
-        let score = 0;
-        questions.forEach((question, index) => {
-            const userAnswer = $(`#question${index}`).val().trim().toLowerCase();
-            if (userAnswer === question.answer.trim().toLowerCase()) {
-                score++;
+    $('#submitQuiz').click(function () {
+        const answers = [];
+        const attemptId = localStorage.getItem('currentAttemptId');
+
+        // Collect all answers
+        $('.question-card').each(function () {
+            const questionId = parseInt($(this).find('input').attr('name').replace('question', ''));
+            const selectedOption = $(this).find('input:checked').val();
+
+            if (selectedOption) {
+                answers.push({
+                    questionId: questionId,
+                    selectedOptionId: parseInt(selectedOption)
+                });
             }
         });
 
-        alert(`Your score is ${score}/${questions.length}`);
-        
-        // Check if user is logged in
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-        if (!isLoggedIn || !loggedInUser) {
-            alert('User not logged in!');
-            window.location.href = 'loginpage.html';
-            return;
-        }
-        // Save the score for the user( userScores->user->subject->quizIndex,score struktura)
-        const userScores = JSON.parse(localStorage.getItem('userScores')) || {};
-        if (!userScores[loggedInUser.email]) {
-            userScores[loggedInUser.email] = {};
-        }
-        if (!userScores[loggedInUser.email][subject]) {
-            userScores[loggedInUser.email][subject] = [];
-        }
-         // Check if there is an existing score 
-         const existingScoreEntry = userScores[loggedInUser.email][subject].find(entry => entry.quizIndex === quizIndex);
-         if (existingScoreEntry) {
-             // Update the score only if the new score is greater(jemi pozitive)
-             if (score > existingScoreEntry.score) {
-                 existingScoreEntry.score = score;
-             }
-         } else {
-             // Add a new score entry if none exists
-             userScores[loggedInUser.email][subject].push({ quizIndex, score });
-         }
- 
-         localStorage.setItem('userScores', JSON.stringify(userScores));
-         window.location.href = 'listquizzes.html';
+        // Submit the quiz
+        $.ajax({
+            url: 'https://localhost:7155/api/QuizAttempt/submit',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                quizAttemptId: parseInt(attemptId),
+                answers: answers
+            }),
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (result) {
+                localStorage.removeItem('currentAttemptId');
+                
+                // Show the result with the same styling
+                $('#quizContent').html(`
+                    <div class="card-header text-center">
+                        <h2 class="mb-0">Quiz Results</h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="result-container">
+                            <h3 class="score-text">Your Score: ${result.score}%</h3>
+                            <p class="completion-time">Completed at: ${new Date(result.completedAt).toLocaleString()}</p>
+                            <a href="myquizzes.html" class="btn btn-primary btn-lg mt-3">Back to My Quizzes</a>
+                        </div>
+                    </div>
+                `);
+            },
+            error: function (xhr) {
+                if (xhr.status === 401) {
+                    window.location.href = 'listquizzes.html';
+                } else {
+                    alert('Error submitting quiz: ' + xhr.responseText);
+                }
+            }
+        });
     });
 });
