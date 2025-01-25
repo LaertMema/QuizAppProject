@@ -26,4 +26,44 @@
 
 .table th {
     font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        margin: 10px 0;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table td, 
+    .table th {
+        padding: 0.5rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Tablet styles */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .card {
+        margin: 15px 0;
+    }
+
+    .table {
+        font-size: 0.95rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
+        margin-left: 15px;
+    }
 } 

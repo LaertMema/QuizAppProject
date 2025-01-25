@@ -43,7 +43,7 @@ $(document).ready(function () {
         $('#quizDescription').text(quiz.description);
 
         const questionsHtml = quiz.questions.map((question, index) => `
-            <div class="question-card mb-4">
+            <div class="question-card mb-4" data-question-id="${question.id}">
                 <div class="question-header">
                     Question ${index + 1}
                 </div>
@@ -56,7 +56,8 @@ $(document).ready(function () {
                                     name="question${question.id}" 
                                     value="${option.id}" 
                                     id="option${option.id}"
-                                    class="option-input">
+                                    class="option-input"
+                                    data-is-correct="${option.isCorrect}">
                                 <label for="option${option.id}" class="option-label">
                                     ${option.text}
                                 </label>
@@ -76,16 +77,22 @@ $(document).ready(function () {
 
         // Collect all answers
         $('.question-card').each(function () {
-            const questionId = parseInt($(this).find('input').attr('name').replace('question', ''));
-            const selectedOption = $(this).find('input:checked').val();
+            const questionId = $(this).data('question-id');
+            const selectedOption = $(this).find('input:checked');
 
-            if (selectedOption) {
+            if (selectedOption.length) {
                 answers.push({
                     questionId: questionId,
-                    selectedOptionId: parseInt(selectedOption)
+                    selectedOptionId: parseInt(selectedOption.val())
                 });
             }
         });
+
+        // Validate all questions are answered
+        if (answers.length !== $('.question-card').length) {
+            alert('Please answer all questions before submitting.');
+            return;
+        }
 
         // Submit the quiz
         $.ajax({
@@ -111,6 +118,16 @@ $(document).ready(function () {
                         <div class="result-container">
                             <h3 class="score-text">Your Score: ${result.score}%</h3>
                             <p class="completion-time">Completed at: ${new Date(result.completedAt).toLocaleString()}</p>
+                            <div class="answers-summary mt-4">
+                                <h4>Answers Summary:</h4>
+                                ${result.answers.map(answer => `
+                                    <div class="answer-item ${answer.isCorrect ? 'correct' : 'incorrect'}">
+                                        <p class="question-text">${answer.questionText}</p>
+                                        <p class="selected-answer">Your answer: ${answer.selectedOptionText}</p>
+                                        <p class="answer-status">${answer.isCorrect ? '✓ Correct' : '✗ Incorrect'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
                             <a href="myquizzes.html" class="btn btn-primary btn-lg mt-3">Back to My Quizzes</a>
                         </div>
                     </div>
@@ -118,7 +135,7 @@ $(document).ready(function () {
             },
             error: function (xhr) {
                 if (xhr.status === 401) {
-                    window.location.href = 'listquizzes.html';
+                    window.location.href = 'login.html';
                 } else {
                     alert('Error submitting quiz: ' + xhr.responseText);
                 }

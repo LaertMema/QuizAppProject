@@ -134,3 +134,90 @@
     text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); /* White glowing effect */
 }
 
+/* Add these media queries */
+
+@media screen and (max-width: 768px) {
+    .upload-section {
+        padding: 20px;
+    }
+
+    .subject-select,
+    .question-area,
+    .submit-btn {
+        width: 90%;
+    }
+
+    .upload-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .upload-section p {
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-links a {
+        margin: 5px 0;
+        display: block;
+    }
+}
+
+/* Tablet styles */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .upload-section {
+        padding: 40px;
+    }
+
+    .subject-select,
+    .question-area,
+    .submit-btn {
+        width: 70%;
+    }
+
+    .upload-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .form-control {
+        font-size: 0.95rem;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
+        margin-left: 15px;
+    }
+
+    .header .app-name {
+        font-size: 1.5rem;
+    }
+}
+
+/* Landscape orientation */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    .upload-section {
+        padding: 20px;
+        min-height: auto;
+    }
+
+    .question-area {
+        margin-top: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .add-question-btn {
+        margin-top: 10px;
+    }
+
+    .submit-btn {
+        margin-top: 15px;
+    }
+}
+

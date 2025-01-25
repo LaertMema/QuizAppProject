@@ -44,3 +44,72 @@ body {
   .signup-link:hover {
     text-decoration: underline;
   }
+
+@media screen and (max-width: 768px) {
+    .login-container,
+    .signup-container {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    body {
+        align-items: flex-start;
+        padding: 20px 0;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+}
+/* Tablet styles */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .login-container,
+  .signup-container {
+      max-width: 500px;
+      padding: 40px;
+  }
+
+  .form-control {
+      padding: 12px;
+      font-size: 1rem;
+  }
+
+  .btn-primary {
+      padding: 12px;
+      font-size: 1.1rem;
+  }
+}
+/* Landscape orientation for mobile */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    body {
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .login-container,
+    .signup-container {
+        margin: 10px auto;
+        padding: 20px;
+        max-width: 600px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        padding: 8px;
+    }
+}
