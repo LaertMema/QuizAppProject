@@ -1,0 +1,229 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #f8f9fa;
+  }
+
+  /* Header Styling */
+  .header {
+    background-color: #0b4caa; /* Epoka University Blue */
+    color: white;
+    padding: 10px 0;
+  }
+
+  .header .app-name {
+    font-size: 1.8rem;
+    font-weight: 700; /* Bold for "Quizz" */
+  }
+
+  .header .app-name span {
+    font-weight: 400; /* Slightly thinner for "InEpoka" */
+  }
+
+  .header .auth-buttons a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-buttons .btn {
+    border: 2px solid white;
+    padding: 5px 15px;
+    font-weight: 600;
+  }
+
+  /* Hero Section Styling */
+  .hero-section {
+    position: relative;
+    background: url('./studenttest.jpeg') no-repeat center center/cover;
+    color: white;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(180, 188, 199, 0.6); /* Blue overlay for blending */
+    z-index: 1;
+  }
+
+  .hero-section .text-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+
+  .hero-section .btn {
+    font-size: 1.2rem;
+    padding: 10px 30px;
+    min-width: 200px;
+    display: inline-block;
+    text-align: center;
+    margin: 10px 0;
+    background-color: white;
+    color: #0b4caa;
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .hero-section .btn:hover {
+    background-color: #2165a6;
+    color: white;
+    transform: scale(1.05);
+  }
+
+  /* Upload Quiz Section Styling */
+  .upload-section {
+    padding: 100px 20px;
+    font-family: 'Roboto', sans-serif;
+    background: #e9ecef;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .upload-section .text-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .upload-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .upload-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+
+  .upload-section .btn {
+    font-size: 1.2rem;
+    padding: 10px 30px;
+    min-width: 200px;
+    display: inline-block;
+    text-align: center;
+    margin: 10px 0;
+    background-color: #0b4caa;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .upload-section .btn:hover {
+    background-color: #2165a6;
+    transform: scale(1.05);
+  }
+
+  .upload-section img {
+    max-width: 40%; /* Ensure the image is properly sized */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for blending */
+    border-radius: 10px;
+    background-color: #e9ecef; /* Blend the image background with the section */
+  }
+
+  /* Add these media queries at the end of your existing landingpage.css */
+
+  @media screen and (max-width: 768px) {
+    .header {
+        padding: 15px;
+    }
+
+    .header .app-name {
+        font-size: 1.4rem;
+    }
+
+    .auth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .auth-buttons a {
+        margin: 5px 0;
+        text-align: center;
+    }
+
+    .hero-section,
+    .upload-section {
+        padding: 40px 20px;
+    }
+
+    .hero-section .text-content,
+    .upload-section .text-content {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    .hero-section .btn,
+    .upload-section .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .hero-section,
+    .upload-section {
+        padding: 60px 40px;
+    }
+
+    .hero-section .text-content,
+    .upload-section .text-content {
+        max-width: 80%;
+    }
+
+    .auth-buttons a {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+  }
+
+  /* Landscape orientation */
+  @media screen and (max-height: 600px) and (orientation: landscape) {
+    .hero-section,
+    .upload-section {
+        padding: 30px 20px;
+    }
+
+    .hero-section .text-content,
+    .upload-section .text-content {
+        max-width: 80%;
+    }
+
+    .hero-section h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .header {
+        position: relative;
+    }
+  }

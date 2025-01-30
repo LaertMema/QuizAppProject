@@ -1,0 +1,114 @@
+body {
+    background-color: #f8f9fa; /* Light gray to match the landing page's background */
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .signup-container {
+    background: white;
+    color: #000;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+  }
+  .signup-container h2 {
+    color: #0056b3; /* Dark blue for header text */
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .btn-primary {
+    background-color: #0056b3; /* Match the header blue from the landing page */
+    border: none;
+    font-size: 16px;
+  }
+  .btn-primary:hover {
+    background-color: #003d80; /* Slightly darker blue for hover effect */
+  }
+  .form-control {
+    border-radius: 10px;
+    border: 1px solid #ced4da;
+  }
+  .form-text {
+    color: #6c757d; /* Subtle gray for help text */
+    font-size: 14px;
+  }
+  .login-link {
+    color: #0056b3; /* Match the header blue */
+    text-decoration: none;
+  }
+  .login-link:hover {
+    text-decoration: underline;
+  }
+  @media screen and (max-width: 768px) {
+    .login-container,
+    .signup-container {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    body {
+        align-items: flex-start;
+        padding: 20px 0;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+}
+/* Tablet styles */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .login-container,
+  .signup-container {
+      max-width: 500px;
+      padding: 40px;
+  }
+
+  .form-control {
+      padding: 12px;
+      font-size: 1rem;
+  }
+
+  .btn-primary {
+      padding: 12px;
+      font-size: 1.1rem;
+  }
+}
+/* Landscape orientation for mobile */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  body {
+      height: auto;
+      padding: 20px 0;
+  }
+
+  .login-container,
+  .signup-container {
+      margin: 10px auto;
+      padding: 20px;
+      max-width: 600px;
+  }
+
+  .form-group {
+      margin-bottom: 10px;
+  }
+
+  h2 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+  }
+
+  .btn-primary {
+      padding: 8px;
+  }
+}
